@@ -62,7 +62,7 @@ if submit_button:
         st.success("Free Cash Flow (FCF):")
         for item in fcf:
             st.write(f" - ${item:,.2f}")
-        st.success(f"Terminal Value: ${terminal_value}")
+        st.success(f"Terminal Value: ${terminal_value:,.2f}")
         st.success("Total Free Cash Flow:")
         for item in revised_fcf:
             st.write(f" - ${item:,.2f}")
