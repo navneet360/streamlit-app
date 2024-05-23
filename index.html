@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Financial Model</title>
+    </head>
+    <body>
+        <h1>Financial Model Input</h1>
+        <form action="/calculate" method="post">
+            <label for="sales">Sales:</label>
+            <input type="number" step="0.01" name="sales" required><br>
+            <label for="growth_rate">Growth Rate (%):</label>
+            <input type="number" step="0.01" name="growth_rate" required><br>
+            <label for="growth_rate_decline">Growth Rate Decline (%):</label>
+            <input type="number" step="0.01" name="growth_rate_decline" required><br>
+            <label for="ebit_margin">EBIT Margin (%):</label>
+            <input type="number" step="0.01" name="ebit_margin" required><br>
+            <label for="increase_in_nwc">Increase in NWC (%):</label>
+            <input type="number" step="0.01" name="increase_in_nwc" required><br>
+            <label for="capex">Capex:</label>
+            <input type="number" step="0.01" name="capex" required><br>
+            <label for="dep_exp">Depreciation Expense:</label>
+            <input type="number" step="0.01" name="dep_exp" required><br>
+            <label for="cash">Cash:</label>
+            <input type="number" step="0.01" name="cash" required><br>
+            <label for="debt">Debt:</label>
+            <input type="number" step="0.01" name="debt" required><br>
+            <label for="os_shares">Outstanding Shares:</label>
+            <input type="number" step="0.01" name="os_shares" required><br>
+            <label for="tax_rate">Tax Rate (%):</label>
+            <input type="number" step="0.01" name="tax_rate" required><br>
+            <label for="wacc">WACC (%):</label>
+            <input type="number" step="0.001" name="wacc" required><br>
+            <label for="start_year">Start Year:</label>
+            <input type="number" name="start_year" required><br>
+            <label for="end_year">End Year:</label>
+            <input type="number" name="end_year" required><br>
+            <input type="submit" value="Calculate">
+        </form>
+    </body>
+</html>
