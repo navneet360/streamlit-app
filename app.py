@@ -58,7 +58,7 @@ with st.form(key='input_form'):
 
 if submit_button:
     try:
-        npv, price = calculate_cash_flows(sales, growth_rate, growth_rate_decline, ebit_margin, increase_in_nwc, capex, dep_exp, cash, debt, os_shares, tax_rate, wacc, start_year, end_year)
+        npv, price, fcf, terminal_value, revised_fcf = calculate_cash_flows(sales, growth_rate, growth_rate_decline, ebit_margin, increase_in_nwc, capex, dep_exp, cash, debt, os_shares, tax_rate, wacc, start_year, end_year)
         st.success(f'The NPV is: ${npv:,.2f}')
         st.success(f'The Price per Share is: ${price:,.2f}')
         st.success("Free Cash Flow (FCF):")
