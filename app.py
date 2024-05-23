@@ -1,6 +1,4 @@
-from flask import Flask, render_template, request
-
-app = Flask(__name__)
+import streamlit as st
 
 def calculate_cash_flows(sales, growth_rate, growth_rate_decline, ebit_margin, increase_in_nwc, capex, dep_exp, cash, debt, os_shares, tax_rate, wacc, start_year, end_year):
     growth_rate_year = [0] * (end_year - start_year + 1)
@@ -35,36 +33,33 @@ def calculate_cash_flows(sales, growth_rate, growth_rate_decline, ebit_margin, i
 
         pv[i] = revised_fcf[i] / ((1 + wacc) ** (i + 1))
         npv += pv[i]
-        print(round(sales_year[i],2),round(ebit_year[i],2),round(nwc_year[i],2),round(revised_fcf[i],2),round(pv[i],2))
+
     return npv, (npv + cash - debt) / os_shares
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+st.title('Financial Calculator')
+st.write('This app calculates the NPV and price per share based on provided financial parameters.')
 
-@app.route('/calculate', methods=['POST'])
-def calculate():
+with st.form(key='input_form'):
+    sales = st.number_input('Sales', value=630)
+    growth_rate = st.number_input('Growth Rate (%)', value=8.0) / 100
+    growth_rate_decline = st.number_input('Growth Rate Decline (%)', value=2.0) / 100
+    ebit_margin = st.number_input('EBIT Margin (%)', value=10.0) / 100
+    increase_in_nwc = st.number_input('Increase in NWC (%)', value=8.0) / 100
+    capex = st.number_input('CAPEX', value=0)
+    dep_exp = st.number_input('Depreciation Expense', value=0)
+    cash = st.number_input('Cash', value=125)
+    debt = st.number_input('Debt', value=5)
+    os_shares = st.number_input('Outstanding Shares', value=25)
+    tax_rate = st.number_input('Tax Rate (%)', value=35.0) / 100
+    wacc = st.number_input('WACC (%)', value=12.5) / 100
+    start_year = st.number_input('Start Year', value=2023)
+    end_year = st.number_input('End Year', value=2026)
+    submit_button = st.form_submit_button(label='Calculate')
+
+if submit_button:
     try:
-        sales = float(request.form['sales'])
-        growth_rate = float(request.form['growth_rate']) / 100
-        growth_rate_decline = float(request.form['growth_rate_decline']) / 100
-        ebit_margin = float(request.form['ebit_margin']) / 100
-        increase_in_nwc = float(request.form['increase_in_nwc']) / 100
-        capex = float(request.form['capex'])
-        dep_exp = float(request.form['dep_exp'])
-        cash = float(request.form['cash'])
-        debt = float(request.form['debt'])
-        os_shares = float(request.form['os_shares'])
-        tax_rate = float(request.form['tax_rate']) / 100
-        wacc = float(request.form['wacc']) / 100
-        start_year = int(request.form['start_year'])
-        end_year = int(request.form['end_year'])
-
         npv, price = calculate_cash_flows(sales, growth_rate, growth_rate_decline, ebit_margin, increase_in_nwc, capex, dep_exp, cash, debt, os_shares, tax_rate, wacc, start_year, end_year)
-
-        return render_template('result.html', npv=npv, price=price)
+        st.success(f'The NPV is: ${npv:,.2f}')
+        st.success(f'The Price per Share is: ${price:,.2f}')
     except Exception as e:
-        return str(e)
-
-if __name__ == '__main__':
-    app.run(debug=True)
+        st.error(f'Error: {e}')
