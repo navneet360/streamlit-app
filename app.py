@@ -23,7 +23,7 @@ def calculate_cash_flows(sales, growth_rate, growth_rate_decline, ebit_margin, i
 
         ebit_year[i] = sales_year[i] * ebit_margin
         tax_rate_year[i] = ebit_year[i] * tax_rate
-        fcf[i] = ebit_year[i] - tax_rate_year[i] - nwc_year[i]
+        fcf[i] = ebit_year[i] - tax_rate_year[i] - nwc_year[i] + dep_exp - capex
 
         if year == end_year:
             terminal_value = fcf[i] * (1 + growth_rate_year[i]) / (wacc - growth_rate_year[i])
@@ -34,7 +34,7 @@ def calculate_cash_flows(sales, growth_rate, growth_rate_decline, ebit_margin, i
         pv[i] = revised_fcf[i] / ((1 + wacc) ** (i + 1))
         npv += pv[i]
 
-    return npv, (npv + cash - debt) / os_shares
+    return npv, (npv + cash - debt) / os_shares, fcf, terminal_value, revised_fcf
 
 st.title('Financial Calculator')
 st.write('This app calculates the NPV and price per share based on provided financial parameters.')
@@ -61,5 +61,6 @@ if submit_button:
         npv, price = calculate_cash_flows(sales, growth_rate, growth_rate_decline, ebit_margin, increase_in_nwc, capex, dep_exp, cash, debt, os_shares, tax_rate, wacc, start_year, end_year)
         st.success(f'The NPV is: ${npv:,.2f}')
         st.success(f'The Price per Share is: ${price:,.2f}')
+        st.success(f'FCF ${fcf}')
     except Exception as e:
         st.error(f'Error: {e}')
